@@ -1,0 +1,39 @@
+# --- Laravel Standard ---
+/node_modules
+/vendor
+/.phpunit.cache
+.phpunit.result.cache
+/auth.json
+
+# --- Environment & Keys (Bohat Zaroori) ---
+.env
+.env.backup
+.env.production
+.env.local
+.env.development
+/storage/*.key
+
+# --- Public Assets ---
+/public/hot
+/public/storage
+# /public/build   <-- Agar assets live na chalain toh is line ko remove kar dena
+
+# --- Storage & Logs ---
+storage/*.log
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/pail
+
+# --- Editor & OS Specific ---
+.DS_Store
+Thumbs.db
+Homestead.json
+Homestead.yaml
+/.idea
+/.vscode
+/.zed
+/.fleet
+/.nova
+.phpactor.json
