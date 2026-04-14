@@ -50,6 +50,16 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        $user = Auth::user();
+        if (!$user->is_active) {
+            // Agar active nahi hai toh foran logout karwa dein
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => 'Aapka account abhi pending hai. Super Admin ki approval ka intezar karein.',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 

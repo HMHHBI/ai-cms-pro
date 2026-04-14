@@ -13,6 +13,8 @@ use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Company;
+use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {
@@ -33,20 +35,28 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'company_name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        // 1. Pehle Company create karein
+        $company = Company::create([
+            'name' => $request->company_name,
+            'slug' => Str::slug($request->company_name) . '-' . rand(100, 999),
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'admin',
+            'company_id' => $company->id,
+            'is_active' => false,
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('login')->with('status', 'Registration kamiyab! Super Admin approve karega toh aap login kar sakenge.');
     }
 }

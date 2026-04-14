@@ -6,7 +6,6 @@ export default function Dashboard({
     auth,
     tickets,
     stats,
-    aiInsight,
     staffMembers,
     filters,
 }) {
@@ -55,7 +54,7 @@ export default function Dashboard({
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    {auth.user.company?.name} Dashboard
+                    {auth.user.company?.name || "Dashboard"}
                 </h2>
             }
         >
@@ -283,9 +282,12 @@ function TicketTable({ tickets, staff, isAdmin, auth, onView }) {
                                                 </option>
                                             ))}
                                         </select>
-                                    ) : ticket.assigned_to === auth.user.id ? (
-                                        <span className="text-green-600 text-xs font-bold uppercase">
-                                            Your Task
+                                    ) : ticket.assigned_to ? (
+                                        // Agar kisi ko assign hai (chahe woh main hoon ya koi aur)
+                                        <span className="text-[10px] font-bold px-2 py-1 bg-gray-100 text-gray-500 rounded uppercase">
+                                            {ticket.assigned_to === auth.user.id
+                                                ? "Assigned to You"
+                                                : "Already Assigned"}
                                         </span>
                                     ) : (
                                         <button

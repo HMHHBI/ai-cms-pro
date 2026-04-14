@@ -234,8 +234,17 @@ export default function AuthenticatedLayout({ header, children }) {
 
             {header && (
                 <header className="bg-white shadow">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center">
                         {header}
+                        <div class="flex items-center space-x-2">
+                            <span class="relative flex h-3 w-3">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </span>
+                            <span class="text-sm font-medium text-gray-600">
+                                AI Support Active
+                            </span>
+                        </div>
                     </div>
                 </header>
             )}

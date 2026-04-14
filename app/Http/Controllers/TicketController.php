@@ -47,6 +47,9 @@ class TicketController extends Controller
     $tickets = (clone $query)->latest()->get();
 
     return Inertia::render('Dashboard', [
+      'auth' => [
+        'user' => Auth::user()->load('company') // ✅ FIX
+      ],
       'tickets' => $tickets->append(['priority_color', 'mood', 'created_at_human', 'is_overdue']),
       'filters' => $request->only(['search', 'status', 'mood']),
       'stats' => [
@@ -91,11 +94,16 @@ class TicketController extends Controller
 
   public function claim(Ticket $ticket)
   {
-    // Staff khud ko assign kar sakta hai agar ticket khali ho
-    if ($ticket->assigned_to)
-      return back()->with('error', 'Already assigned!');
+    // ❌ Gap: Pehle sirf status check ho raha tha shayad
+    // ✅ Fix: Check karein ke assigned_to null hai ya nahi
+    if ($ticket->assigned_to !== null) {
+      return back()->with('error', 'Yeh ticket pehle hi kisi ko assign ho chuka hai!');
+    }
 
-    $ticket->update(['assigned_to' => Auth::id()]);
+    $ticket->update([
+      'assigned_to' => Auth::id(),
+    ]);
+
     return back()->with('message', 'Ticket claimed successfully!');
   }
 
