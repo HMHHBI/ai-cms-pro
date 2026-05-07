@@ -21,5 +21,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
+        foreach ([
+            storage_path('framework/views'),
+            storage_path('framework/cache'),
+            storage_path('framework/sessions'),
+        ] as $path) {
+            if (!is_dir($path)) {
+                mkdir($path, 0775, true);
+            }
+        }
     }
 }
