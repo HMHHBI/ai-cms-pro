@@ -23,7 +23,10 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
 # Permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN mkdir -p storage/framework/{cache,sessions,views} \
+  && mkdir -p bootstrap/cache \
+  && chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+  && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 10000
 
